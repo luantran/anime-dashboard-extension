@@ -1,0 +1,190 @@
+/* === 1. Base Reset === */
+html, body, #root, main {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* === 2. Theme Variables === */
+:root {
+    --bg-main: #000;
+    --text-main: #fff;
+}
+
+/* === 3. Global Defaults === */
+body {
+    background-color: #121212;
+    color: #f1f1f1;
+    font-family: system-ui, sans-serif;
+}
+
+/* === 4. Main Container === */
+#main-view {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    overflow: hidden;
+}
+
+/* Ensure overlay button / content above carousel */
+#main-view > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* === 5. Carousel Core === */
+#carouselContainer,
+.carousel-inner,
+.carousel-item,
+.carousel-item img {
+    width: 100%;
+    height: 100vh;
+}
+
+/* === Carousel Image Behavior (Full Width, Zoomed Cover) === */
+.carousel-item img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;         /* 👈 fills width, zooms/crops slightly */
+    object-position: center;   /* keep centered framing */
+    transition: transform 5s ease-in-out; /* 👈 slow zoom effect */
+}
+
+/* Optional fade effect (only if you add .carousel-fade class) */
+.carousel.carousel-fade .carousel-item {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+.carousel.carousel-fade .carousel-item.active,
+.carousel.carousel-fade .carousel-item-next.carousel-item-start,
+.carousel.carousel-fade .carousel-item-prev.carousel-item-end {
+    opacity: 1;
+    z-index: 1;
+}
+
+/* === 6. Carousel Controls (bottom centered) === */
+.carousel-control-prev,
+.carousel-control-next {
+    position: absolute;
+    bottom: 1.5rem;
+    top: auto;
+    width: auto;
+    height: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    z-index: 1050;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
+}
+
+.carousel-control-prev {
+    left: 50%;
+    transform: translateX(-120%);
+}
+
+.carousel-control-next {
+    right: 50%;
+    transform: translateX(120%);
+}
+/* === Override Bootstrap's default carousel icons with white SVGs === */
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' stroke='%23ffffff' fill='none' stroke-width='1.5' viewBox='0 0 16 16'%3E%3Cpath d='M10 2L4 8l6 6'/%3E%3C/svg%3E");
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' stroke='%23ffffff' fill='none' stroke-width='1.5' viewBox='0 0 16 16'%3E%3Cpath d='M6 2l6 6-6 6'/%3E%3C/svg%3E");
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+/* Remove Bootstrap's built-in filters (they interfere with colors) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: none !important;
+    opacity: 0.9;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+/* Hover effect for clarity */
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/*!* === 7. Sidebar / Offcanvas Styling === *!*/
+/*.offcanvas {*/
+/*    background: rgba(20, 20, 20, 0.2);*/
+/*    color: #f1f1f1;*/
+/*    min-width: 280px;*/
+/*    max-width: 90vw;*/
+/*}*/
+/*.offcanvas-header {*/
+/*    border-bottom: 1px solid rgba(255, 255, 255, 0.15);*/
+/*    background: rgba(30, 30, 30, 1);*/
+/*}*/
+/*.offcanvas-body {*/
+/*    background: rgba(25, 25, 25, 0.8);*/
+/*    color: #eaeaea;*/
+/*}*/
+
+/*!* === 8. Sidebar Buttons === *!*/
+/*.btn-toggle {*/
+/*    display: inline-flex;*/
+/*    align-items: center;*/
+/*    padding: .25rem .5rem;*/
+/*    font-weight: 600;*/
+/*    color: rgba(255, 255, 255, 0.75);*/
+/*    background: transparent;*/
+/*    border: 0;*/
+/*}*/
+/*.btn-toggle:hover,*/
+/*.btn-toggle:focus {*/
+/*    color: #fff;*/
+/*    background-color: rgba(255, 255, 255, 0.1);*/
+/*}*/
+/*.btn-toggle[aria-expanded="true"] {*/
+/*    color: #fff;*/
+/*}*/
+/*.btn-toggle::before {*/
+/*    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.6%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");*/
+/*    transition: transform .35s ease;*/
+/*    transform-origin: .5em 50%;*/
+/*}*/
+/*.btn-toggle[aria-expanded="true"]::before {*/
+/*    transform: rotate(90deg);*/
+/*}*/
+
+/*!* === 9. Overlay Button (top left) === *!*/
+/*button.btn.btn-outline-light.position-absolute {*/
+/*    z-index: 10;*/
+/*    border-color: rgba(255, 255, 255, 0.5);*/
+/*}*/
+/*button.btn.btn-outline-light.position-absolute:hover {*/
+/*    background-color: rgba(255, 255, 255, 0.1);*/
+/*    border-color: #fff;*/
+/*}*/
+
+/*!* === 10. Anime List / Sidebar Items === *!*/
+/*#anime-list ul {*/
+/*    font-size: 0.9rem;*/
+/*    color: #ccc;*/
+/*}*/
+/*#anime-list li:hover > a {*/
+/*    background-color: rgba(255, 255, 255, 0.08);*/
+/*}*/
+/*#anime-list input[type="checkbox"] {*/
+/*    accent-color: #00c6ff;*/
+/*    transform: scale(1.1);*/
+/*}*/
