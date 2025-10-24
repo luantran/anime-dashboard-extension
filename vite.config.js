@@ -15,4 +15,10 @@ export default defineConfig({
       // You can add global SCSS imports if you customize Bootstrap later
     },
   },
+  test: {
+    globals: true,
+    environment: "jsdom",         // 👈 This is crucial
+    setupFiles: "./tests/setupTests.js",
+    include: ["tests/**/*.test.{js,jsx,ts,tsx}"],
+  },
 });
