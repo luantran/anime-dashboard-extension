@@ -123,58 +123,88 @@ body {
     transform: scale(1.05);
 }
 
-/*!* === 7. Sidebar / Offcanvas Styling === *!*/
-/*.offcanvas {*/
-/*    background: rgba(20, 20, 20, 0.2);*/
-/*    color: #f1f1f1;*/
-/*    min-width: 280px;*/
-/*    max-width: 90vw;*/
-/*}*/
-/*.offcanvas-header {*/
-/*    border-bottom: 1px solid rgba(255, 255, 255, 0.15);*/
-/*    background: rgba(30, 30, 30, 1);*/
-/*}*/
-/*.offcanvas-body {*/
-/*    background: rgba(25, 25, 25, 0.8);*/
-/*    color: #eaeaea;*/
-/*}*/
+/* === 7. Sidebar / Offcanvas Styling === */
+.offcanvas {
+    background: rgba(20, 20, 20, 0.2);
+    color: #f1f1f1;
+    min-width: 280px;
+    max-width: 90vw;
+}
+.offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(30, 30, 30, 1);
+}
+.offcanvas-body {
+    background: rgba(25, 25, 25, 0.8);
+    color: #eaeaea;
+}
 
-/*!* === 8. Sidebar Buttons === *!*/
-/*.btn-toggle {*/
-/*    display: inline-flex;*/
-/*    align-items: center;*/
-/*    padding: .25rem .5rem;*/
-/*    font-weight: 600;*/
-/*    color: rgba(255, 255, 255, 0.75);*/
-/*    background: transparent;*/
-/*    border: 0;*/
-/*}*/
-/*.btn-toggle:hover,*/
-/*.btn-toggle:focus {*/
-/*    color: #fff;*/
-/*    background-color: rgba(255, 255, 255, 0.1);*/
-/*}*/
-/*.btn-toggle[aria-expanded="true"] {*/
-/*    color: #fff;*/
-/*}*/
-/*.btn-toggle::before {*/
-/*    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.6%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");*/
-/*    transition: transform .35s ease;*/
-/*    transform-origin: .5em 50%;*/
-/*}*/
-/*.btn-toggle[aria-expanded="true"]::before {*/
-/*    transform: rotate(90deg);*/
-/*}*/
+/* === 8. Sidebar Buttons === */
 
-/*!* === 9. Overlay Button (top left) === *!*/
-/*button.btn.btn-outline-light.position-absolute {*/
-/*    z-index: 10;*/
-/*    border-color: rgba(255, 255, 255, 0.5);*/
-/*}*/
-/*button.btn.btn-outline-light.position-absolute:hover {*/
-/*    background-color: rgba(255, 255, 255, 0.1);*/
-/*    border-color: #fff;*/
-/*}*/
+.btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-weight: 600;
+    color: white;
+    background-color: transparent;
+    border: 0;
+}
+.btn-toggle:hover,
+.btn-toggle:focus {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-toggle::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.6%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+}
+
+.btn-toggle[aria-expanded="true"] {
+    color: white;
+}
+.btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+
+.btn-toggle-nav a {
+    display: inline-flex;
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+    text-decoration: none;
+    color: white;
+}
+.btn-toggle-nav a:hover,
+.btn-toggle-nav a:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === 9. Overlay Button (top left) === */
+button.btn.btn-outline-light.position-absolute {
+    z-index: 10;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+button.btn.btn-outline-light.position-absolute:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+}
+
+.btn-close {
+    --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.9%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 2l12 12M14 2L2 14'/%3e%3c/svg%3e");
+    filter: none;
+    opacity: 1;
+}
+
+.offcanvas {
+    --bs-offcanvas-width: auto;
+    --bs-offcanvas-min-width: 280px !important;
+}
+
 
 /*!* === 10. Anime List / Sidebar Items === *!*/
 /*#anime-list ul {*/
