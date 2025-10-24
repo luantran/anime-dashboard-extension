@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css'
 import OverlayButton from "./components/OverlayButton.jsx";
-import ImageCarousel from "./components/Carousel.jsx";
+import ImageCarousel from "./components/ImageCarousel.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import { getCachedImages } from "./services/githubService.js";
 import { ImageContext } from './context/ImageContext.js';
+import FloatingToDo from "./components/FloatingToDo.jsx";
 
 function App() {
     const [allImages, setAllImages] = useState();
@@ -30,7 +31,9 @@ function App() {
               <OverlayButton />
               <ImageCarousel />
           </main>
+          {/*<FloatingToDo />*/}
       </ImageContext.Provider>
+
           )
 }
 export default App
