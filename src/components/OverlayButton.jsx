@@ -1,7 +1,10 @@
+import {Button} from "react-bootstrap";
+
 function OverlayButton() {
     return (
-        <button
-            className="btn btn-outline-light position-absolute top-0 start-0 m-3 z-3"
+        <Button
+            variant="outline-light"
+            className="position-absolute top-0 start-0 m-3 z-3"
             type="button"
             data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasSidebar"
@@ -9,10 +12,8 @@ function OverlayButton() {
             aria-label="Toggle sidebar"
             title="Open sidebar"
         >
-            <span aria-hidden="true">
-                  <i className="bi bi-list fs-6"></i>
-            </span>
-        </button>
+            <i className="bi bi-list fs-6" aria-hidden="true"></i>
+        </Button>
     );
 }
 
