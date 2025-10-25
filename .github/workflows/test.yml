@@ -28,12 +28,12 @@ jobs:
 
       # Run unit & integration tests
       - name: Run Vitest
-        run: npm run test -- --run
+        run: npx vitest run --coverage --reporter=dot --reporter=summary
 
-      # Upload coverage report as an artifact
-      - name: Upload coverage report
-        if: success()
-        uses: actions/upload-artifact@v4
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          name: vitest-coverage
-          path: coverage/
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          fail_ci_if_error: true
