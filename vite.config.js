@@ -20,5 +20,10 @@ export default defineConfig({
     environment: "jsdom",         // 👈 This is crucial
     setupFiles: "./tests/setupTests.js",
     include: ["tests/**/*.test.{js,jsx,ts,tsx}"],
+    coverage: {
+      provider: "v8", // or "istanbul"
+      reporter: ["text", "lcov", "json-summary"],
+      reportsDirectory: "./coverage",
+    },
   },
 });
