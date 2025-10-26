@@ -47,33 +47,3 @@ jobs:
           files: ./coverage/lcov.info
           flags: unittests
           fail_ci_if_error: true
-
-      - name: Write to Summary
-        run: |
-          echo "# 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ All tests passed" >> $GITHUB_STEP_SUMMARY
-          echo "- 📊 Coverage: 94%" >> $GITHUB_STEP_SUMMARY
-
-      - name: Add results to GitHub summary
-        if: always()
-        run: |
-          echo "# Test and Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # --- Test Results ---
-          echo "## Unit Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          # show the last 10 lines of vitest’s summary (adjust as needed)
-          tail -n 10 test-output.txt >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # --- Coverage ---
-          echo "## Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          grep -A6 "Coverage summary" test-output.txt >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # --- Codecov Badge ---
-          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
-          echo "[View detailed coverage report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
-
