@@ -15,6 +15,7 @@ export default defineConfig({
       // You can add global SCSS imports if you customize Bootstrap later
     },
   },
+
   test: {
     globals: true,
     environment: "jsdom",
@@ -25,5 +26,13 @@ export default defineConfig({
       reporter: ["text", "lcov", "json-summary"],
       reportsDirectory: "./coverage",
     },
+    // reporters for terminal + GitHub integration
+    reporters: [
+      'default',           // nice terminal output
+      ['junit', { outputFile: './test-results/junit-results.xml' }], // for dorny/test-reporter
+    ],
+
+    // Increase timeouts if needed
+    testTimeout: 10000,
   },
 });
