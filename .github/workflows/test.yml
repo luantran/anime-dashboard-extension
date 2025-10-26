@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests with coverage + JUnit output
         run: |
-          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml
+          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml | tee test-output.txt
         # Make sure your vitest.config.js is aligned with this output path.
 
       - name: Upload test results to GitHub
@@ -47,3 +47,27 @@ jobs:
           files: ./coverage/lcov.info
           flags: unittests
           fail_ci_if_error: true
+
+      - name: Add results to GitHub summary
+        if: always()
+        run: |
+          echo "# Test and Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # --- Test Results ---
+          echo "## Unit Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          # show the last 10 lines of vitest’s summary (adjust as needed)
+          tail -n 10 test-output.txt >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # --- Coverage ---
+          echo "## Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          grep -A6 "Coverage summary" test-output.txt >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # --- Codecov Badge ---
+          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
+          echo "[View detailed coverage report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
+
