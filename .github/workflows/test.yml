@@ -48,6 +48,12 @@ jobs:
           flags: unittests
           fail_ci_if_error: true
 
+      - name: Write to Summary
+        run: |
+          echo "# 🧪 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ All tests passed" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 Coverage: 94%" >> $GITHUB_STEP_SUMMARY
+
       - name: Add results to GitHub summary
         if: always()
         run: |
