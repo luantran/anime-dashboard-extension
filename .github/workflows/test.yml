@@ -28,7 +28,7 @@ jobs:
 
       # Run unit & integration tests
       - name: Run Vitest
-        run: npx vitest run --coverage --reporter=dot --reporter=summary
+        run: npx vitest run --coverage --verbose
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
