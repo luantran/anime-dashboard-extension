@@ -26,9 +26,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Run unit & integration tests
-      - name: Run Vitest
-        run: npx vitest run --coverage --reporter=verbose
+      - name: Run tests with coverage + JUnit output
+        run: |
+          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml | tee test-output.txt
+        # Make sure your vitest.config.js is aligned with this output path.
+
+      - name: Upload test results to GitHub
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: Unit Tests
+          path: ./test-results/junit-results.xml
+          reporter: jest-junit
+          fail-on-error: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
