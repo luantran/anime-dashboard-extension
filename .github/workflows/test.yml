@@ -51,6 +51,8 @@ jobs:
       - name: 🧹 Parse Coverage Table to Markdown
         if: always()
         run: |
+          mkdir -p ./test-results ./coverage
+          
           # Remove ANSI color codes
           sed -r "s/\x1B\[[0-9;]*[mGKHF]//g" ./test-results/text-summary.txt > ./test-results/clean-summary.txt
 
