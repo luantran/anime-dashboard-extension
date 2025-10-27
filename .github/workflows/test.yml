@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests with coverage + JUnit output
         run: |
-          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml | tee test-output.txt
+          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml 2>&1 | tee ./test-results/text-summary.txt
         # Make sure your vitest.config.js is aligned with this output path.
 
       - name: Upload test results to GitHub
@@ -48,33 +48,30 @@ jobs:
           flags: unittests
           fail_ci_if_error: true
 
-      - name: 📊 Add Coverage Summary to GitHub UI
+      - name: 🧹 Parse Coverage Table to Markdown
         if: always()
         run: |
-          echo "# Test and Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          # Remove ANSI color codes
+          sed -r "s/\x1B\[[0-9;]*[mGKHF]//g" ./test-results/text-summary.txt > ./test-results/clean-summary.txt
 
-          if [ ! -f coverage/coverage-summary.json ]; then
-            echo "coverage-summary.json not found" >> $GITHUB_STEP_SUMMARY
-            exit 0
-          fi
+          # Extract only the coverage table section
+          awk '/^-{5,}/ {f=1} f' ./test-results/clean-summary.txt | awk '/^-{5,}/ {c++} c<=2' > ./test-results/coverage-table.txt
 
-          # Extract values from your JSON structure
-          LINES=$(jq '.total.lines.pct' coverage/coverage-summary.json)
-          STMT=$(jq '.total.statements.pct' coverage/coverage-summary.json)
-          FUNCS=$(jq '.total.functions.pct' coverage/coverage-summary.json)
-          BRANCHES=$(jq '.total.branches.pct' coverage/coverage-summary.json)
+          echo " Extracted Coverage Table:"
+          cat ./test-results/coverage-table.txt
 
-          # Display the data as a Markdown table
-          echo "## Coverage Overview" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
-          echo "|:--------|---------:|" >> $GITHUB_STEP_SUMMARY
-          echo "| Statements | ${STMT}% |" >> $GITHUB_STEP_SUMMARY
-          echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
-          echo "| Functions | ${FUNCS}% |" >> $GITHUB_STEP_SUMMARY
-          echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          # Parse ASCII coverage table into Markdown
+          echo "# Coverage Summary" >> ./test-results/coverage-markdown.md
+          echo "" >> ./test-results/coverage-markdown.md
+          echo "| File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Lines |" >> ./test-results/coverage-markdown.md
+          echo "|:------|---------:|----------:|---------:|---------:|----------------:|" >> ./test-results/coverage-markdown.md
 
-          # Include Codecov badge and link for details
-          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
-          echo "[View detailed report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
+          # Skip headers/delimiters, reformat columns
+          grep -v "^-" ./test-results/coverage-table.txt | grep -v "^File" | awk -F"|" '{if(NF>5) printf("| %s | %s | %s | %s | %s | %s |\n",$1,$2,$3,$4,$5,$6)}' >> ./test-results/coverage-markdown.md
+
+          echo "" >> ./test-results/coverage-markdown.md
+          echo " Parsed Markdown Table:"
+          cat ./test-results/coverage-markdown.md
+
+          # Append Markdown table to GitHub summary
+          cat ./test-results/coverage-markdown.md >> $GITHUB_STEP_SUMMARY
