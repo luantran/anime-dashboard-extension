@@ -49,7 +49,7 @@ jobs:
           flags: unittests
           fail_ci_if_error: true
 
-      - name: 🧹 Parse Coverage Table to Markdown
+      - name: Parse Coverage Table to Markdown
         if: always()
         run: |
           mkdir -p ./test-results ./coverage
@@ -78,3 +78,7 @@ jobs:
 
           # Append Markdown table to GitHub summary
           cat ./test-results/coverage-markdown.md >> $GITHUB_STEP_SUMMARY
+          
+          # Include Codecov badge and link for details
+          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
+          echo "[View detailed report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
