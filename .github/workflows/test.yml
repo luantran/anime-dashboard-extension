@@ -47,3 +47,34 @@ jobs:
           files: ./coverage/lcov.info
           flags: unittests
           fail_ci_if_error: true
+
+      - name: 📊 Add Coverage Summary to GitHub UI
+        if: always()
+        run: |
+          echo "# 🧪 Test and Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "⚠️ coverage-summary.json not found" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+
+          # Extract values from your JSON structure
+          LINES=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+          STMT=$(jq '.total.statements.pct' coverage/coverage-summary.json)
+          FUNCS=$(jq '.total.functions.pct' coverage/coverage-summary.json)
+          BRANCHES=$(jq '.total.branches.pct' coverage/coverage-summary.json)
+
+          # Display the data as a Markdown table
+          echo "## 📈 Coverage Overview" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
+          echo "|:--------|---------:|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧾 Statements | ${STMT}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔀 Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔧 Functions | ${FUNCS}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📄 Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Include Codecov badge and link for details
+          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
+          echo "[View detailed report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
