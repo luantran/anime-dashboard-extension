@@ -67,7 +67,7 @@ describe("ImageCarousel Component", () => {
     });
 
     // ----------------------------
-    // 🧠 INTEGRATION TESTS
+    // INTEGRATION TESTS
     // ----------------------------
 
     it("renders Carousel with given interval from context", () => {
@@ -77,6 +77,15 @@ describe("ImageCarousel Component", () => {
         const carousel = screen.getByTestId("mock-carousel");
         expect(carousel).toBeInTheDocument();
         expect(carousel.getAttribute("interval")).toBe("2000");
+    });
+
+    it("renders Carousel without interval from context", () => {
+        const mockImages = { test: ["a.jpg", "b.jpg"] };
+        renderWithContext({ allImages: mockImages, carouselInterval: null });
+
+        const carousel = screen.getByTestId("mock-carousel");
+        expect(carousel).toBeInTheDocument();
+        expect(carousel.getAttribute("interval")).toBe("5000");
     });
 
     it("renders the correct number of Carousel.Items", () => {
@@ -99,7 +108,7 @@ describe("ImageCarousel Component", () => {
     });
 
     // ----------------------------
-    // ⏱️ TIMER / BEHAVIOR TESTS
+    // TIMER / BEHAVIOR TESTS
     // ----------------------------
 
     it("auto-rotates slides based on interval (mocked timers)", () => {
