@@ -30,7 +30,7 @@ function Sidebar() {
                                 aria-expanded="false">
                             Carousel Settings
                         </button>
-                        <div className="collapse" id="carousel-settings-collapse">
+                        <div className="collapse" id="carousel-settings-collapse" data-testid="carousel-settings-collapse">
                             <CarouselIntervalForm />
                         </div>
                     </li>
