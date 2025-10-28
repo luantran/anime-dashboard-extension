@@ -1,0 +1,84 @@
+name: Run unit tests and integration tests
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  run_unit_tests_integration_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      #  Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node.js (use same version as local dev)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      #  Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage + JUnit output
+        run: |
+          mkdir -p ./test-results
+          npx vitest run --coverage --reporter=default --reporter=junit --outputFile=./test-results/junit-results.xml 2>&1 | tee ./test-results/text-summary.txt
+        # Make sure your vitest.config.js is aligned with this output path.
+
+      - name: Upload test results to GitHub
+        uses: dorny/test-reporter@v2
+        if: always()
+        with:
+          name: Unit Tests
+          path: ./test-results/junit-results.xml
+          reporter: jest-junit
+          fail-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          fail_ci_if_error: true
+
+      - name: Parse Coverage Table to Markdown
+        if: always()
+        run: |
+          mkdir -p ./test-results ./coverage
+          
+          # Remove ANSI color codes
+          sed -r "s/\x1B\[[0-9;]*[mGKHF]//g" ./test-results/text-summary.txt > ./test-results/clean-summary.txt
+
+          # Extract only the coverage table section
+          awk '/^-{5,}/ {f=1} f' ./test-results/clean-summary.txt | awk '/^-{5,}/ {c++} c<=2' > ./test-results/coverage-table.txt
+
+          echo " Extracted Coverage Table:"
+          cat ./test-results/coverage-table.txt
+
+          # Parse ASCII coverage table into Markdown
+          echo "# Coverage Summary" >> ./test-results/coverage-markdown.md
+          echo "" >> ./test-results/coverage-markdown.md
+          echo "| File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Lines |" >> ./test-results/coverage-markdown.md
+          echo "|:------|---------:|----------:|---------:|---------:|----------------:|" >> ./test-results/coverage-markdown.md
+
+          # Skip headers/delimiters, reformat columns
+          grep -v "^-" ./test-results/coverage-table.txt | grep -v "^File" | awk -F"|" '{if(NF>5) printf("| %s | %s | %s | %s | %s | %s |\n",$1,$2,$3,$4,$5,$6)}' >> ./test-results/coverage-markdown.md
+
+          echo "" >> ./test-results/coverage-markdown.md
+          echo " Parsed Markdown Table:"
+          cat ./test-results/coverage-markdown.md
+
+          # Append Markdown table to GitHub summary
+          cat ./test-results/coverage-markdown.md >> $GITHUB_STEP_SUMMARY
+          
+          # Include Codecov badge and link for details
+          echo "![Coverage Badge](https://codecov.io/gh/luantran/anime-dashboard-extension/branch/dev/graph/badge.svg)" >> $GITHUB_STEP_SUMMARY
+          echo "[View detailed report on Codecov →](https://app.codecov.io/gh/luantran/anime-dashboard-extension)" >> $GITHUB_STEP_SUMMARY
