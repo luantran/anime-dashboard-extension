@@ -36,7 +36,7 @@ describe("Sidebar component", () => {
         );
     };
 
-    it("renders the sidebar title and sections", () => {
+    it("renders a sidebar title and sections", () => {
         renderSidebar();
 
         expect(screen.getByText("Settings")).toBeInTheDocument();
@@ -44,14 +44,14 @@ describe("Sidebar component", () => {
         expect(screen.getByText("Wallpapers")).toBeInTheDocument();
     });
 
-    it("renders the fruit list", () => {
+    it("renders the fruit list within the Wallpapers section", () => {
         renderSidebar();
         expect(screen.getByText("apple")).toBeInTheDocument();
         expect(screen.getByText("banana")).toBeInTheDocument();
         expect(screen.getByText("cherry")).toBeInTheDocument();
     });
 
-    it("contains a collapse section for carousel settings", () => {
+    it("renders a collapsible div within the Carousel settings", () => {
         renderSidebar();
 
         const button = screen.getByRole("button", { name: /carousel settings/i });
@@ -73,7 +73,7 @@ describe("Sidebar component", () => {
 
 });
 
-describe("Integration: Sidebar + CarouselIntervalForm", () => {
+describe("Integration tests: Sidebar + CarouselIntervalForm", () => {
     it("renders the form inside the collapse section", () => {
         render(<Wrapper />);
 
