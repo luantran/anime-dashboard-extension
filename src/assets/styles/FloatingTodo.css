@@ -1,0 +1,59 @@
+.form-control::placeholder {
+    color: #adb5bd; /* a light gray that works on dark bg */
+    opacity: 1; /* ensure it's not faded */
+}
+
+.floating-todo-card {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 20vw;
+    max-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    z-index: 1100;
+    background-color: rgba(33, 37, 41, 0.7);
+    backdrop-filter: blur(6px);
+    opacity: 0.8;
+}
+
+.floating-todo-header {
+    background-color: rgba(33, 37, 41, 0.8) !important;
+    border-radius: 12px 12px 0 0;
+    opacity: 0.85;
+}
+
+.floating-todo-body {
+    overflow-y: auto;
+    padding-bottom: 0.5rem;
+    /*opacity: 0.4;*/
+}
+
+.floating-todo-item {
+    background-color: rgba(255, 255, 255, 0.18);
+    border: none !important;
+    border-radius: 12px;
+    margin-bottom: 6px;
+    color: #ffffff !important;     /* <-- ensures text is white */
+    /*font-weight: 500;*/
+}
+
+/* Ensure the remove button stays visible and white */
+.floating-todo-remove {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.9) !important; /* brighter white */
+}
+
+.floating-todo-remove:hover {
+    color: #ff4d4d !important; /* nice hover effect, optional */
+}
+
+.floating-todo-remove {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.floating-todo-input {
+    background-color: rgba(33, 37, 41, 0.8);
+}

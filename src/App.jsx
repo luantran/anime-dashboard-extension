@@ -31,7 +31,7 @@ function App() {
               <OverlayButton />
               <ImageCarousel />
           </main>
-          {/*<FloatingToDo />*/}
+          <FloatingToDo />
       </ImageContext.Provider>
 
           )

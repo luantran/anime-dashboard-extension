@@ -21,6 +21,12 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: "./tests/setupTests.js",
     include: ["tests/**/*.test.{js,jsx,ts,tsx}"],
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true
+      }
+    },
     coverage: {
       provider: "v8", // or "istanbul"
       reporter: ["text", "lcov", "json-summary"],
